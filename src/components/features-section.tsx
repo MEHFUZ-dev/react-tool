@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { 
   Zap, 
   Palette, 
@@ -15,51 +15,61 @@ import {
 } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 
-const features = [
+const initialFeatures = [
   {
+    id: 1,
     icon: Zap,
-    title: "Turbopack Speed",
-    description: "Experience lightning-fast development with Next.js 14 and Turbopack bundling.",
+    title: "Lightning Fast",
+    description: "Turbopack powered",
     color: "from-yellow-400 to-orange-500"
   },
   {
+    id: 2,
     icon: Palette,
-    title: "Beautiful Design",
-    description: "Crafted with Tailwind CSS and ShadCN/UI for stunning, accessible components.",
+    title: "Beautiful UI",
+    description: "ShadCN components",
     color: "from-purple-400 to-pink-500"
   },
   {
+    id: 3,
     icon: Shield,
-    title: "Type Safety",
-    description: "Built with TypeScript for robust, error-free development experience.",
-    color: "from-blue-400 to-cyan-500"
-  },
-  {
-    icon: Smartphone,
-    title: "Mobile First",
-    description: "Responsive design that works perfectly on all devices and screen sizes.",
-    color: "from-green-400 to-emerald-500"
-  },
-  {
-    icon: Code,
     title: "Modern Stack",
-    description: "Leveraging the latest technologies including React 18, Framer Motion, and more.",
-    color: "from-indigo-400 to-purple-500"
-  },
-  {
-    icon: Layers,
-    title: "Component Library",
-    description: "Extensive collection of reusable components built with best practices.",
-    color: "from-pink-400 to-rose-500"
+    description: "Latest technologies",
+    color: "from-blue-400 to-cyan-500"
   }
 ]
 
 export function FeaturesSection() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const [features, setFeatures] = useState(initialFeatures)
+  const [draggedItem, setDraggedItem] = useState<number | null>(null)
+
+  const handleDragStart = (id: number) => {
+    setDraggedItem(id)
+  }
+
+  const handleDragEnd = () => {
+    setDraggedItem(null)
+  }
+
+  const handleDrop = (targetId: number) => {
+    if (draggedItem && draggedItem !== targetId) {
+      const newFeatures = [...features]
+      const draggedIndex = newFeatures.findIndex(f => f.id === draggedItem)
+      const targetIndex = newFeatures.findIndex(f => f.id === targetId)
+      
+      // Swap positions
+      const temp = newFeatures[draggedIndex]
+      newFeatures[draggedIndex] = newFeatures[targetIndex]
+      newFeatures[targetIndex] = temp
+      
+      setFeatures(newFeatures)
+    }
+  }
 
   return (
-    <section id="features" className="py-24 bg-white" ref={ref}>
+    <section id="features" className="py-24 bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50" ref={ref}>
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -72,44 +82,68 @@ export function FeaturesSection() {
             <span className="text-purple-600 font-semibold text-lg">Features</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Why Choose <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">FullStack Hub</span>
+            Why Choose <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Our Platform</span>
           </h2>
           <p className="text-xl text-black max-w-3xl mx-auto">
-            Make informed technology decisions with real-time data, comprehensive comparisons, 
-            and expert insights from the developer community.
+            Interactive features that make development faster and more enjoyable. 
+            Click to animate, drag to reorder!
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="flex flex-wrap justify-center gap-8 max-w-4xl mx-auto">
           {features.map((feature, index) => (
             <motion.div
-              key={index}
+              key={feature.id}
               initial={{ opacity: 0, y: 50 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
               transition={{ duration: 0.8, delay: index * 0.1 }}
-              whileHover={{ y: -10 }}
-              className="group"
+              drag
+              dragConstraints={{ left: -100, right: 100, top: -100, bottom: 100 }}
+              dragElastic={0.1}
+              onDragStart={() => handleDragStart(feature.id)}
+              onDragEnd={handleDragEnd}
+              whileHover={{ 
+                y: -10,
+                scale: 1.05,
+                rotate: [0, -2, 2, 0],
+                transition: { duration: 0.3 }
+              }}
+              whileTap={{ 
+                scale: 0.95,
+                y: -20,
+                rotate: [0, 10, -10, 0],
+                transition: { duration: 0.2 }
+              }}
+              whileDrag={{ 
+                scale: 1.1, 
+                rotate: 5,
+                zIndex: 10,
+                boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)"
+              }}
+              className="group cursor-grab active:cursor-grabbing"
+              style={{ width: '280px' }}
+              onDrop={() => handleDrop(feature.id)}
             >
-              <Card className="p-8 h-full border-0 shadow-lg hover:shadow-2xl transition-all duration-300 bg-gradient-to-br from-white to-gray-50">
-                <div className="flex items-center mb-6">
-                  <div className={`p-3 rounded-2xl bg-gradient-to-r ${feature.color} shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                    <feature.icon className="h-8 w-8 text-white" />
+              <Card className="p-8 h-full border-0 shadow-lg hover:shadow-2xl transition-all duration-300 bg-white/80 backdrop-blur-sm">
+                <div className="flex flex-col items-center text-center">
+                  <div className={`p-4 rounded-2xl bg-gradient-to-r ${feature.color} shadow-lg group-hover:scale-110 transition-transform duration-300 mb-4`}>
+                    <feature.icon className="h-12 w-12 text-white" />
                   </div>
+                  
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors duration-300">
+                    {feature.title}
+                  </h3>
+                  
+                  <p className="text-gray-600 leading-relaxed text-sm">
+                    {feature.description}
+                  </p>
+                  
+                  <motion.div
+                    initial={{ width: 0 }}
+                    whileHover={{ width: "100%" }}
+                    className="h-1 bg-gradient-to-r from-purple-600 to-pink-600 mt-4 rounded-full"
+                  />
                 </div>
-                
-                <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-purple-600 transition-colors duration-300">
-                  {feature.title}
-                </h3>
-                
-                <p className="text-gray-600 leading-relaxed">
-                  {feature.description}
-                </p>
-                
-                <motion.div
-                  initial={{ width: 0 }}
-                  whileHover={{ width: "100%" }}
-                  className="h-1 bg-gradient-to-r from-purple-600 to-pink-600 mt-6 rounded-full"
-                />
               </Card>
             </motion.div>
           ))}
