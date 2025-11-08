@@ -101,7 +101,7 @@ export function HeroSection() {
           <Button 
             variant="outline" 
             size="lg"
-            className="border-2 border-white/20 text-white hover:bg-white/10 px-8 py-6 text-lg font-semibold rounded-full backdrop-blur-sm transition-all duration-300"
+            className="border-2 border-purple-600 text-gray-900 hover:bg-purple-600 hover:text-white px-8 py-6 text-lg font-semibold rounded-full backdrop-blur-sm transition-all duration-300 bg-white/80"
           >
             <Play className="mr-2 h-5 w-5" />
             Compare Stacks
@@ -122,7 +122,18 @@ export function HeroSection() {
             <motion.div
               key={index}
               whileHover={{ y: -10, scale: 1.05 }}
-              className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-purple-100 shadow-lg"
+              whileTap={{ 
+                scale: 0.8,
+                y: -80,
+                rotate: [0, 20, -20, 0],
+                transition: { 
+                  duration: 0.6,
+                  type: "spring",
+                  stiffness: 200,
+                  damping: 8
+                }
+              }}
+              className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-purple-100 shadow-lg cursor-pointer"
             >
               <feature.icon className="h-12 w-12 text-purple-600 mx-auto mb-4" />
               <h3 className="text-lg font-semibold text-gray-900 mb-2">{feature.title}</h3>

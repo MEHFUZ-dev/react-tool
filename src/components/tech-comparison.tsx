@@ -563,23 +563,21 @@ export function TechComparison() {
           <div className="text-center mb-12">
             <button
               onClick={() => setShowAll(!showAll)}
-              className="group relative bg-gray-100 border-2 border-purple-600 hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-600 text-gray-900 hover:text-white px-8 py-3 rounded-lg font-bold transition-all duration-300 transform hover:scale-105 flex items-center gap-2 mx-auto overflow-hidden shadow-xl"
+              className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 flex items-center gap-2 mx-auto"
             >
               {showAll ? (
                 <>
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
                   </svg>
-                  <span className="group-hover:hidden">Compare Stack</span>
-                  <span className="hidden group-hover:inline">Less Technologies</span>
+                  <span>Less Stack</span>
                 </>
               ) : (
                 <>
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
-                  <span className="group-hover:hidden">Compare Stack</span>
-                  <span className="hidden group-hover:inline">Explore Technologies ({filteredTechnologies.length - 6} more)</span>
+                  <span>More Stack ({filteredTechnologies.length - 6} more)</span>
                 </>
               )}
             </button>
