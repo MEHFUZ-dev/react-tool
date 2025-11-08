@@ -109,10 +109,15 @@ export function FeaturesSection() {
                 transition: { duration: 0.3 }
               }}
               whileTap={{ 
-                scale: 0.95,
-                y: -20,
-                rotate: [0, 10, -10, 0],
-                transition: { duration: 0.2 }
+                scale: 0.9,
+                y: -50,
+                rotate: [0, 15, -15, 0],
+                transition: { 
+                  duration: 0.4,
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 10
+                }
               }}
               whileDrag={{ 
                 scale: 1.1, 
