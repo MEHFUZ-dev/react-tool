@@ -563,7 +563,7 @@ export function TechComparison() {
           <div className="text-center mb-12">
             <button
               onClick={() => setShowAll(!showAll)}
-              className="group relative bg-white border-2 border-purple-600 hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-600 text-gray-900 hover:text-white px-8 py-3 rounded-lg font-bold transition-all duration-300 transform hover:scale-105 flex items-center gap-2 mx-auto overflow-hidden shadow-lg"
+              className="group relative bg-gray-100 border-2 border-purple-600 hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-600 text-gray-900 hover:text-white px-8 py-3 rounded-lg font-bold transition-all duration-300 transform hover:scale-105 flex items-center gap-2 mx-auto overflow-hidden shadow-xl"
             >
               {showAll ? (
                 <>

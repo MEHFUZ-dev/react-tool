@@ -71,7 +71,7 @@ export function HeroSection() {
             FullStack
           </span>
           <br />
-          <span className="text-gray-900">Tech Hub</span>
+          <span className="text-gray-900 font-bold">Tech Hub</span>
         </motion.h1>
 
         <motion.p 
