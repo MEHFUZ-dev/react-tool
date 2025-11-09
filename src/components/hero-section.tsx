@@ -1,7 +1,8 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { ArrowRight, Sparkles, Zap, Rocket, Play } from 'lucide-react'
+import Link from 'next/link'
+import { ArrowRight, Sparkles, Zap, Rocket, Play, LogIn, UserPlus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 
@@ -90,22 +91,26 @@ export function HeroSection() {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
-          <Button 
-            size="lg" 
-            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-6 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
-          >
-            <Rocket className="mr-2 h-5 w-5" />
-            Explore Technologies
-          </Button>
+          <Link href="/login">
+            <Button 
+              size="lg" 
+              className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-6 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              <LogIn className="mr-2 h-5 w-5" />
+              Login
+            </Button>
+          </Link>
           
-          <Button 
-            variant="outline" 
-            size="lg"
-            className="border-2 border-purple-600 text-gray-900 hover:bg-purple-600 hover:text-white px-8 py-6 text-lg font-semibold rounded-full backdrop-blur-sm transition-all duration-300 bg-white/80"
-          >
-            <Play className="mr-2 h-5 w-5" />
-            Compare Stacks
-          </Button>
+          <Link href="/register">
+            <Button 
+              variant="outline" 
+              size="lg"
+              className="border-2 border-purple-600 text-gray-900 hover:bg-purple-600 hover:text-white px-8 py-6 text-lg font-semibold rounded-full backdrop-blur-sm transition-all duration-300 bg-white/80"
+            >
+              <UserPlus className="mr-2 h-5 w-5" />
+              Sign Up
+            </Button>
+          </Link>
         </motion.div>
 
         <motion.div

@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -19,6 +19,7 @@ import {
   Download,
   Clock
 } from 'lucide-react'
+import { DraggableFlash } from './draggable-flash'
 
 interface Technology {
   id: string
@@ -35,6 +36,7 @@ interface Technology {
   cons: string[]
   usedBy: string[]
   color: string
+  documentationUrl: string
 }
 
 const technologies: Technology[] = [
@@ -52,7 +54,8 @@ const technologies: Technology[] = [
     pros: ['Virtual DOM', 'Large ecosystem', 'Strong community', 'Flexible'],
     cons: ['Steep learning curve', 'Rapid changes', 'JSX complexity'],
     usedBy: ['Facebook', 'Netflix', 'Airbnb', 'Instagram'],
-    color: 'from-blue-500 to-cyan-500'
+    color: 'from-blue-500 to-cyan-500',
+    documentationUrl: 'https://react.dev'
   },
   {
     id: 'vue',
@@ -68,7 +71,8 @@ const technologies: Technology[] = [
     pros: ['Easy to learn', 'Great documentation', 'Flexible', 'Small size'],
     cons: ['Smaller ecosystem', 'Less job opportunities', 'Language barriers'],
     usedBy: ['GitLab', 'Adobe', 'Nintendo', 'BMW'],
-    color: 'from-green-500 to-emerald-500'
+    color: 'from-green-500 to-emerald-500',
+    documentationUrl: 'https://vuejs.org'
   },
   {
     id: 'angular',
@@ -84,7 +88,8 @@ const technologies: Technology[] = [
     pros: ['Full framework', 'TypeScript support', 'Enterprise ready', 'CLI tools'],
     cons: ['Complex', 'Large bundle size', 'Steep learning curve'],
     usedBy: ['Google', 'Microsoft', 'Deutsche Bank', 'Samsung'],
-    color: 'from-red-500 to-pink-500'
+    color: 'from-red-500 to-pink-500',
+    documentationUrl: 'https://angular.io'
   },
   {
     id: 'nodejs',
@@ -100,7 +105,8 @@ const technologies: Technology[] = [
     pros: ['JavaScript everywhere', 'Fast I/O', 'Large ecosystem', 'Scalable'],
     cons: ['Single-threaded', 'Callback hell', 'Rapid changes'],
     usedBy: ['Netflix', 'Uber', 'LinkedIn', 'PayPal'],
-    color: 'from-green-600 to-lime-500'
+    color: 'from-green-600 to-lime-500',
+    documentationUrl: 'https://nodejs.org'
   },
   {
     id: 'python',
@@ -116,7 +122,8 @@ const technologies: Technology[] = [
     pros: ['Rapid development', 'Clean syntax', 'Great for AI/ML', 'Stable'],
     cons: ['Slower than compiled languages', 'GIL limitations'],
     usedBy: ['Instagram', 'Spotify', 'Dropbox', 'Pinterest'],
-    color: 'from-yellow-500 to-orange-500'
+    color: 'from-yellow-500 to-orange-500',
+    documentationUrl: 'https://docs.djangoproject.com'
   },
   {
     id: 'mongodb',
@@ -132,7 +139,8 @@ const technologies: Technology[] = [
     pros: ['Flexible schema', 'Horizontal scaling', 'JSON-like documents'],
     cons: ['Memory usage', 'No ACID transactions', 'Learning curve'],
     usedBy: ['Facebook', 'Google', 'eBay', 'Adobe'],
-    color: 'from-green-700 to-green-500'
+    color: 'from-green-700 to-green-500',
+    documentationUrl: 'https://docs.mongodb.com'
   },
   {
     id: 'nextjs',
@@ -148,7 +156,8 @@ const technologies: Technology[] = [
     pros: ['Server-side rendering', 'File-based routing', 'API routes', 'Performance'],
     cons: ['Learning curve', 'Opinionated', 'Build complexity'],
     usedBy: ['Vercel', 'TikTok', 'Twitch', 'Hulu'],
-    color: 'from-black to-gray-600'
+    color: 'from-black to-gray-600',
+    documentationUrl: 'https://nextjs.org/docs'
   },
   {
     id: 'svelte',
@@ -164,7 +173,8 @@ const technologies: Technology[] = [
     pros: ['No virtual DOM', 'Small bundle size', 'Easy to learn', 'Fast'],
     cons: ['Smaller ecosystem', 'Less jobs', 'Newer framework'],
     usedBy: ['The New York Times', 'Apple', 'Spotify', 'Reuters'],
-    color: 'from-orange-500 to-red-500'
+    color: 'from-orange-500 to-red-500',
+    documentationUrl: 'https://svelte.dev/docs'
   },
   {
     id: 'express',
@@ -180,7 +190,8 @@ const technologies: Technology[] = [
     pros: ['Minimalist', 'Flexible', 'Large ecosystem', 'Fast development'],
     cons: ['No structure', 'Security concerns', 'Callback hell'],
     usedBy: ['IBM', 'Accenture', 'Uber', 'Fox Sports'],
-    color: 'from-gray-700 to-gray-500'
+    color: 'from-gray-700 to-gray-500',
+    documentationUrl: 'https://expressjs.com'
   },
   {
     id: 'fastapi',
@@ -196,7 +207,8 @@ const technologies: Technology[] = [
     pros: ['Fast performance', 'Auto documentation', 'Type hints', 'Modern Python'],
     cons: ['Newer framework', 'Smaller community', 'Python limitations'],
     usedBy: ['Microsoft', 'Uber', 'Netflix', 'Explosion AI'],
-    color: 'from-teal-500 to-cyan-500'
+    color: 'from-teal-500 to-cyan-500',
+    documentationUrl: 'https://fastapi.tiangolo.com'
   },
   {
     id: 'postgresql',
@@ -212,7 +224,8 @@ const technologies: Technology[] = [
     pros: ['ACID compliant', 'Advanced features', 'Reliable', 'Extensible'],
     cons: ['Complex setup', 'Memory usage', 'Learning curve'],
     usedBy: ['Apple', 'Fujitsu', 'Red Hat', 'Sun Microsystems'],
-    color: 'from-blue-600 to-indigo-600'
+    color: 'from-blue-600 to-indigo-600',
+    documentationUrl: 'https://www.postgresql.org/docs/'
   },
   {
     id: 'mysql',
@@ -228,7 +241,8 @@ const technologies: Technology[] = [
     pros: ['Easy to use', 'Fast', 'Reliable', 'Wide support'],
     cons: ['Limited features', 'Licensing issues', 'Storage engines'],
     usedBy: ['Facebook', 'Twitter', 'YouTube', 'GitHub'],
-    color: 'from-orange-600 to-yellow-500'
+    color: 'from-orange-600 to-yellow-500',
+    documentationUrl: 'https://dev.mysql.com/doc/'
   },
   {
     id: 'redis',
@@ -244,7 +258,8 @@ const technologies: Technology[] = [
     pros: ['Very fast', 'Multiple data types', 'Pub/Sub', 'Caching'],
     cons: ['Memory only', 'Single-threaded', 'Persistence complexity'],
     usedBy: ['Twitter', 'GitHub', 'Weibo', 'Pinterest'],
-    color: 'from-red-600 to-red-400'
+    color: 'from-red-600 to-red-400',
+    documentationUrl: 'https://redis.io/docs/'
   },
   {
     id: 'reactnative',
@@ -260,7 +275,8 @@ const technologies: Technology[] = [
     pros: ['Cross-platform', 'React knowledge', 'Hot reload', 'Native performance'],
     cons: ['Platform differences', 'Bridge overhead', 'Debugging complexity'],
     usedBy: ['Facebook', 'Instagram', 'Airbnb', 'Tesla'],
-    color: 'from-blue-500 to-purple-500'
+    color: 'from-blue-500 to-purple-500',
+    documentationUrl: 'https://reactnative.dev/docs/getting-started'
   },
   {
     id: 'flutter',
@@ -276,7 +292,8 @@ const technologies: Technology[] = [
     pros: ['Cross-platform', 'Fast development', 'Custom widgets', 'Hot reload'],
     cons: ['Large app size', 'Dart language', 'Newer ecosystem'],
     usedBy: ['Google', 'Alibaba', 'BMW', 'Square'],
-    color: 'from-blue-400 to-cyan-400'
+    color: 'from-blue-400 to-cyan-400',
+    documentationUrl: 'https://docs.flutter.dev/'
   },
   {
     id: 'docker',
@@ -292,7 +309,8 @@ const technologies: Technology[] = [
     pros: ['Containerization', 'Consistent environments', 'Scalable', 'DevOps friendly'],
     cons: ['Learning curve', 'Resource overhead', 'Security concerns'],
     usedBy: ['Google', 'VMware', 'ING', 'PayPal'],
-    color: 'from-blue-600 to-blue-400'
+    color: 'from-blue-600 to-blue-400',
+    documentationUrl: 'https://docs.docker.com'
   },
   {
     id: 'kubernetes',
@@ -308,7 +326,8 @@ const technologies: Technology[] = [
     pros: ['Auto-scaling', 'Self-healing', 'Load balancing', 'Rolling updates'],
     cons: ['Complex', 'Steep learning curve', 'Resource intensive'],
     usedBy: ['Google', 'Microsoft', 'Red Hat', 'IBM'],
-    color: 'from-indigo-600 to-purple-600'
+    color: 'from-indigo-600 to-purple-600',
+    documentationUrl: 'https://kubernetes.io/docs/'
   },
   {
     id: 'aws',
@@ -324,7 +343,8 @@ const technologies: Technology[] = [
     pros: ['Comprehensive services', 'Scalable', 'Reliable', 'Global reach'],
     cons: ['Complex pricing', 'Vendor lock-in', 'Learning curve'],
     usedBy: ['Netflix', 'Airbnb', 'Slack', 'Adobe'],
-    color: 'from-orange-500 to-yellow-400'
+    color: 'from-orange-500 to-yellow-400',
+    documentationUrl: 'https://docs.aws.amazon.com'
   },
   {
     id: 'typescript',
@@ -340,7 +360,8 @@ const technologies: Technology[] = [
     pros: ['Type safety', 'Better IDE support', 'Refactoring', 'Large codebase friendly'],
     cons: ['Compilation step', 'Learning curve', 'Configuration complexity'],
     usedBy: ['Microsoft', 'Slack', 'Asana', 'Lyft'],
-    color: 'from-blue-600 to-blue-800'
+    color: 'from-blue-600 to-blue-800',
+    documentationUrl: 'https://www.typescriptlang.org/docs/'
   },
   {
     id: 'graphql',
@@ -356,7 +377,8 @@ const technologies: Technology[] = [
     pros: ['Flexible queries', 'Type system', 'Single endpoint', 'Real-time'],
     cons: ['Learning curve', 'Caching complexity', 'Over-fetching'],
     usedBy: ['Facebook', 'GitHub', 'Pinterest', 'Coursera'],
-    color: 'from-pink-500 to-purple-500'
+    color: 'from-pink-500 to-purple-500',
+    documentationUrl: 'https://graphql.org/learn/'
   }
 ]
 
@@ -373,12 +395,18 @@ export function TechComparison() {
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [selectedTechs, setSelectedTechs] = useState<string[]>([])
   const [showAll, setShowAll] = useState(false)
+  const containerRef = useRef<HTMLElement>(null)
 
   const filteredTechnologies = selectedCategory === 'all' 
     ? technologies 
     : technologies.filter(tech => tech.category === selectedCategory)
   
   const displayedTechnologies = showAll ? filteredTechnologies : filteredTechnologies.slice(0, 6)
+
+  const handleTechClick = (tech: Technology) => {
+    // Open documentation in new tab
+    window.open(tech.documentationUrl, '_blank', 'noopener,noreferrer')
+  }
 
   const toggleTechSelection = (techId: string) => {
     setSelectedTechs(prev => 
@@ -391,7 +419,7 @@ export function TechComparison() {
   const selectedTechData = technologies.filter(tech => selectedTechs.includes(tech.id))
 
   return (
-    <section className="py-24 bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
+    <section ref={containerRef} className="py-24 bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -455,10 +483,10 @@ export function TechComparison() {
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               <Card 
-                className={`bg-white border-gray-200 hover:border-gray-400 hover:shadow-lg transition-all duration-300 cursor-pointer group relative overflow-hidden ${
+                className={`bg-white border-gray-200 hover:border-purple-400 hover:shadow-xl transition-all duration-300 cursor-pointer group relative overflow-hidden transform hover:scale-105 ${
                   selectedTechs.includes(tech.id) ? 'border-gray-400 shadow-md' : ''
                 }`}
-                onClick={() => toggleTechSelection(tech.id)}
+                onClick={() => handleTechClick(tech)}
               >
                 {/* Animated Background Video Effect */}
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500">
@@ -632,9 +660,15 @@ export function TechComparison() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-center py-12"
+            className="text-center py-12 relative"
           >
-            <Zap className="h-16 w-16 text-purple-500 mx-auto mb-4" />
+            <div className="relative flex justify-center mb-8">
+              <DraggableFlash 
+                size={64}
+                containerRef={containerRef}
+                className="relative"
+              />
+            </div>
             <p className="text-xl text-black">
               Click on technologies to compare them side-by-side
             </p>

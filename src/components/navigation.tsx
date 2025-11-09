@@ -2,16 +2,17 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import Link from 'next/link'
 import { Menu, X, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useAppStore } from '@/lib/store'
 import { scrollTo } from '@/lib/lenis'
 
 const navItems = [
-  { name: 'Home', href: '#hero' },
-  { name: 'About', href: '#about' },
-  { name: 'Features', href: '#features' },
-  { name: 'Contact', href: '#contact' },
+  { name: 'Home', href: '#hero', type: 'scroll' },
+  { name: 'About', href: '/about', type: 'link' },
+  { name: 'Features', href: '#features', type: 'scroll' },
+  { name: 'Contact', href: '#contact', type: 'scroll' },
 ]
 
 export function Navigation() {
@@ -56,19 +57,33 @@ export function Navigation() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
-              <motion.button
-                key={item.name}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => handleNavClick(item.href)}
-                className="text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium"
-              >
-                {item.name}
-              </motion.button>
+              item.type === 'link' ? (
+                <Link key={item.name} href={item.href} target="_blank" rel="noopener noreferrer">
+                  <motion.span
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium cursor-pointer"
+                  >
+                    {item.name}
+                  </motion.span>
+                </Link>
+              ) : (
+                <motion.button
+                  key={item.name}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => handleNavClick(item.href)}
+                  className="text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium"
+                >
+                  {item.name}
+                </motion.button>
+              )
             ))}
-            <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
-              Get Started
-            </Button>
+            <Link href="/login">
+              <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
+                Login
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -96,22 +111,37 @@ export function Navigation() {
           >
             <div className="px-4 py-6 space-y-4">
               {navItems.map((item) => (
-                <motion.button
-                  key={item.name}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => {
-                    handleNavClick(item.href)
-                    setMenuOpen(false)
-                  }}
-                  className="block w-full text-left text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium py-2"
-                >
-                  {item.name}
-                </motion.button>
+                item.type === 'link' ? (
+                  <Link key={item.name} href={item.href} target="_blank" rel="noopener noreferrer">
+                    <motion.span
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => setMenuOpen(false)}
+                      className="block w-full text-left text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium py-2 cursor-pointer"
+                    >
+                      {item.name}
+                    </motion.span>
+                  </Link>
+                ) : (
+                  <motion.button
+                    key={item.name}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => {
+                      handleNavClick(item.href)
+                      setMenuOpen(false)
+                    }}
+                    className="block w-full text-left text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium py-2"
+                  >
+                    {item.name}
+                  </motion.button>
+                )
               ))}
-              <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
-                Explore Technologies
-              </Button>
+              <Link href="/login">
+                <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
+                  Login
+                </Button>
+              </Link>
             </div>
           </motion.div>
         )}
