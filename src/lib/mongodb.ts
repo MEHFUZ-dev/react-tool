@@ -27,6 +27,7 @@ if (uri) {
   }
 } else {
   console.warn('MongoDB URI not found - database features will be disabled')
+  // Database connection will be established once environment variables are configured
 }
 
 // Export a module-scoped MongoClient promise. By doing this in a
