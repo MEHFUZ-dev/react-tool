@@ -89,7 +89,7 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+          className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8"
         >
           <Link href="/login">
             <Button 
@@ -114,15 +114,69 @@ export function HeroSection() {
         </motion.div>
 
         <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
+          className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+        >
+          <a 
+            href="https://aws.amazon.com/what-is/full-stack-development/#:~:text=Full%2Dstack%20developers%20have%20a,PostgreSQL%2C%20MongoDB%2C%20and%20more."
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Button 
+              variant="ghost" 
+              size="lg"
+              className="text-purple-600 hover:bg-purple-50 px-6 py-3 text-base font-medium rounded-full transition-all duration-300"
+            >
+              <Rocket className="mr-2 h-4 w-4" />
+              Explore Technologies
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </a>
+          
+          <a 
+            href="https://www.geeksforgeeks.org/blogs/full-stack-development-tools/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Button 
+              variant="ghost" 
+              size="lg"
+              className="text-purple-600 hover:bg-purple-50 px-6 py-3 text-base font-medium rounded-full transition-all duration-300"
+            >
+              <Sparkles className="mr-2 h-4 w-4" />
+              Compare Stack
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </a>
+        </motion.div>
+
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 1 }}
           className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto"
         >
           {[
-            { icon: Zap, title: "Lightning Fast", desc: "Turbopack powered" },
-            { icon: Sparkles, title: "Beautiful UI", desc: "ShadCN components" },
-            { icon: Rocket, title: "Modern Stack", desc: "Latest technologies" },
+            { 
+              icon: Zap, 
+              title: "Lightning Fast", 
+              desc: "Turbopack powered",
+              url: "https://meetpan1048.medium.com/next-js-turbopack-the-ultimate-tool-for-lightning-fast-development-af626e1f97e8"
+            },
+            { 
+              icon: Sparkles, 
+              title: "Beautiful UI", 
+              desc: "ShadCN components",
+              url: "https://ui.shadcn.com/docs/components"
+            },
+            { 
+              icon: Rocket, 
+              title: "Modern Stack", 
+              desc: "Latest technologies",
+              url: "https://aws.amazon.com/what-is/full-stack-development/#:~:text=Full%2Dstack%20developers%20have%20a,PostgreSQL%2C%20MongoDB%2C%20and%20more."
+            },
           ].map((feature, index) => (
             <motion.div
               key={index}
@@ -139,6 +193,7 @@ export function HeroSection() {
                 }
               }}
               className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 border border-purple-100 shadow-lg cursor-pointer"
+              onClick={() => window.open(feature.url, '_blank', 'noopener,noreferrer')}
             >
               <feature.icon className="h-12 w-12 text-purple-600 mx-auto mb-4" />
               <h3 className="text-lg font-semibold text-gray-900 mb-2">{feature.title}</h3>
