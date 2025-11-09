@@ -1,10 +1,11 @@
 import { MongoClient, Db } from 'mongodb'
 
 if (!process.env.MONGODB_URI) {
-  throw new Error('Invalid/Missing environment variable: "MONGODB_URI"')
+  console.warn('MongoDB URI not found, using fallback')
+  // Use a fallback or mock connection for deployment
 }
 
-const uri = process.env.MONGODB_URI
+const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/techhub'
 const options = {}
 
 let client

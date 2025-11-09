@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { getDatabase } from '@/lib/mongodb'
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production'
+const JWT_SECRET = process.env.JWT_SECRET || 'fallback-jwt-secret-for-deployment-change-in-production'
 
 export async function POST(request: NextRequest) {
   try {
