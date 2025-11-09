@@ -68,9 +68,9 @@ export function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
-            FullStack
-          </span>
+          <span className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              FullStack Tech Hub
+            </span>
           <br />
           <span className="text-gray-900 font-bold">Tech Hub</span>
         </motion.h1>
