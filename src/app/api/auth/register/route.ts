@@ -32,6 +32,13 @@ export async function POST(request: NextRequest) {
     }
 
     const db = await getDatabase()
+    if (!db) {
+      return NextResponse.json(
+        { message: 'Registration service temporarily unavailable' },
+        { status: 503 }
+      )
+    }
+
     const usersCollection = db.collection('users')
 
     // Check if user already exists

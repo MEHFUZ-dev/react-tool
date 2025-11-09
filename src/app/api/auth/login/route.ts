@@ -18,6 +18,13 @@ export async function POST(request: NextRequest) {
     }
 
     const db = await getDatabase()
+    if (!db) {
+      return NextResponse.json(
+        { message: 'Authentication service temporarily unavailable' },
+        { status: 503 }
+      )
+    }
+
     const usersCollection = db.collection('users')
 
     // Find user by email
